@@ -1,0 +1,16 @@
+{
+    "name"        : "Claude",
+    "main"        : "index.html",
+    "description" : "Nuage lumineux connecté",
+    "repository"  :
+    {
+        "type" : "git",
+        "url"  : "test"
+    },
+    "window"      :
+    {
+        "toolbar" : true,
+        "frame"   : true,
+        "width"   : 300
+    }
+}

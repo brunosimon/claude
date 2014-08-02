@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Claude</title>
+</head>
+<body>
+    Hello claude
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script>
+        // var serialport = require('serialport');
+        // var SerialPort = serialport.SerialPort;
+
+        // serialport.list(function (err, ports)
+        // {
+        //     ports.forEach(function (port)
+        //     {
+        //         // console.log(port.comName);
+        //         // console.log(port.pnpId);
+        //         // console.log(port.manufacturer);
+        //     });
+        // });
+
+        // var socket = io.connect('http://localhost:3000');
+        // socket.on('blink',function()
+        // {
+        //     console.log('blink');
+        // });
+
+        var Forecast = require('forecast');
+
+        // Initialize
+        var forecast = new Forecast(
+            {
+                service : 'forecast.io',
+                key     : '0bef343d4530a6e8257d75c7dd9a4aa9',
+                units   : 'celcius', // Only the first letter is parsed
+                cache   : true,      // Cache API requests?
+                ttl     :
+                {            // How long to cache requests. Uses syntax from moment.js: http://momentjs.com/docs/#/durations/creating/
+                    minutes: 27,
+                    seconds: 45
+                }
+            }
+        );
+
+        forecast.get([-33.8683, 151.2086], function(err, weather)
+        {
+            if(err)
+                return console.dir(err);
+
+            console.dir(weather);
+        });
+
+    </script>
+</body>
+</html>

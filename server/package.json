@@ -1,0 +1,9 @@
+{
+  "name": "claude-server",
+  "version": "0.0.1",
+  "description": "Claude server bootstrap",
+  "dependencies": {
+    "express": "^4.7.2",
+    "socket.io": "^1.0.6"
+  }
+}
