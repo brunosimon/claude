@@ -31,16 +31,6 @@
         },
 
         /**
-         * START
-         */
-        start: function()
-        {
-
-
-            return this;
-        },
-
-        /**
          * GET
          */
         get: function(key)

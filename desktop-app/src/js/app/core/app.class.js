@@ -16,12 +16,15 @@
         {
             this._super(options);
 
+            // Tools
             this.browser  = new APP.TOOLS.Browser();
             this.serial   = new APP.TOOLS.Serial();
             this.forecast = new APP.TOOLS.Forecast();
             this.data     = new APP.TOOLS.Data();
+            this.template = new APP.TOOLS.Template();
 
-            this.$ = {};
+            // Components
+            this.header = new APP.COMPONENTS.Header();
         },
 
         /**
@@ -33,6 +36,7 @@
             this.serial.start();
             this.forecast.start();
             this.data.start();
+            this.template.start();
         }
     });
 })(window);

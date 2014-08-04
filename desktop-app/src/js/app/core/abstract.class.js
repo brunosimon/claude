@@ -11,6 +11,8 @@
             if(typeof options === 'undefined')
                 options = {};
 
+            this.$ = {};
+
             this.options = _.defaults(options,this.options);
         },
 
