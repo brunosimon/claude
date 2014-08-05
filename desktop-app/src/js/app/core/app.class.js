@@ -24,7 +24,8 @@
             this.template = new APP.TOOLS.Template();
 
             // Components
-            this.header = new APP.COMPONENTS.Header();
+            this.widgets = new APP.COMPONENTS.Widgets();
+            this.header  = new APP.COMPONENTS.Header({widgets:this.widgets});
         },
 
         /**
@@ -37,6 +38,9 @@
             this.forecast.start();
             this.data.start();
             this.template.start();
+
+            this.header.start();
+            this.widgets.start();
         }
     });
 })(window);

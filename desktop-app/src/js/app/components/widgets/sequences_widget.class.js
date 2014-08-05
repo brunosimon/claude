@@ -2,7 +2,7 @@
 {
     "use strict";
 
-    APP.COMPONENTS.Widget = APP.CORE.Event_Emitter.extend(
+    APP.COMPONENTS.Sequences_Widget = APP.COMPONENTS.Widget.extend(
     {
         options:
         {
@@ -16,9 +16,7 @@
         {
             this._super(options);
 
-            this.unique = true;
-            this.name   = 'Widget';
-            this.id     = 0;
+            this.name = 'Sequences';
         },
 
         /**
@@ -26,7 +24,7 @@
          */
         start: function()
         {
-
+            return this;
         }
     });
 })(window);

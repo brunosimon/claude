@@ -2,7 +2,7 @@
 {
     "use strict";
 
-    APP.COMPONENTS.Widget = APP.CORE.Event_Emitter.extend(
+    APP.COMPONENTS.Forecast_Widget = APP.COMPONENTS.Widget.extend(
     {
         options:
         {
@@ -16,9 +16,8 @@
         {
             this._super(options);
 
-            this.unique = true;
-            this.name   = 'Widget';
-            this.id     = 0;
+            this.unique = false;
+            this.name   = 'Forecast';
         },
 
         /**
@@ -26,7 +25,7 @@
          */
         start: function()
         {
-
+            return this;
         }
     });
 })(window);
