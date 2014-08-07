@@ -115,7 +115,6 @@ var serialport = require('serialport');
          */
         close: function()
         {
-
             if(!this.connected)
             {
                 if(this.options.logs)

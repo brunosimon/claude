@@ -17,6 +17,7 @@
             this._super(options);
 
             this.name = 'Ambient';
+            this.slug = 'ambient';
         },
 
         /**

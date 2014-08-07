@@ -13,7 +13,7 @@
 
             this.$ = {};
 
-            this.options = _.defaults(options,this.options);
+            this.options = merge(this.options,options);
         },
 
         start: function()

@@ -20,7 +20,7 @@
             this.data     = new APP.TOOLS.Data();
             this.widgets  = options.widgets;
 
-            $('body').append(this.template.render('header'));
+            APP.CONFIG.$.body.prepend(this.template.render('header'));
 
             this.$.main              = $('header');
             this.$.name              = this.$.main.find('input.name');
@@ -44,8 +44,7 @@
          */
         start: function()
         {
-
-
+            this.$.name.val(this.data.get('name'));
         },
 
         /**
@@ -60,6 +59,14 @@
             {
                 var val = that.$.name.val();
                 that.data.set('name',val);
+            });
+
+            this.$.name.on('keydown',function(e)
+            {
+                if(e.keyCode === 13)
+                {
+                    that.$.name.blur();
+                }
             });
 
             // Widgets

@@ -17,9 +17,14 @@
         {
             this._super(options);
 
+            this.template    = new APP.TOOLS.Template();
             this.id_iterator = 1;
             this.types       = {};
             this.items       = [];
+
+            APP.CONFIG.$.body.prepend(this.template.render('widgets/widgets'));
+
+            this.$.container = $('section.widgets');
 
             // Instances list
             for(var i = 0, len = this.options.types.length, slug = null; i < len; i++)
@@ -57,6 +62,9 @@
             widget.id  = this.id_iterator++;
             widget.start();
             this.items.push(widget);
+
+            // Add template
+            this.$.container.append(widget.get_template());
 
             // Log
             if(this.options.logs)
