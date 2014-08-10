@@ -153,6 +153,10 @@
 
             name = that.resolve_name(name);
 
+            // Clean (need some work)
+            name.value  = name.value.replace(/[^a-zA-Z0-9 ,\/.]/g,'');
+            name.value  = name.value.replace(/[,\/]+/g,' ');
+
             // Default tag
             if(name.tag === 'default')
             {

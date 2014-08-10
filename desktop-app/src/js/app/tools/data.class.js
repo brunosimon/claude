@@ -82,8 +82,6 @@
 
             localStorage.setItem(key,value);
 
-            console.log(value);
-
             return this;
         }
     });

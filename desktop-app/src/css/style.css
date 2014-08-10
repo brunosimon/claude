@@ -1,6 +1,20 @@
-header {position:fixed;top:0;left:0;width:100%;height:100px;background:#eee;}
-header img.logo {position:absolute;top:10px;left:10px;}
-header .dropdown {position:absolute;top:30px;left:140px;}
-header input[type=text] {position:absolute;top:20px;right:30px;background:none;border:none;padding:0;margin:0;font-size:40px;line-height:40px;text-align:right;}
+body {background:#ddd;}
 
-.widgets {margin:100px 0 0 0;}
+header.header {position:fixed;top:0;left:0;width:100%;height:100px;background:#eee;}
+header.header .logo {position:absolute;top:13px;left:22px;width:88px;line-height:0;font-size:84px;text-align:center;}
+header.header .dropdown {position:absolute;top:20px;left:140px;}
+header.header input[type=text] {position:absolute;top:20px;right:30px;background:none;border:none;padding:0;margin:0;font-size:40px;line-height:40px;text-align:right;}
+
+section.widgets {margin:120px 0 0 20px;}
+section.widgets .widget {width:240px;margin:0 20px 20px 0;background:#fff;}
+section.widgets .widget header {text-transform:uppercase;margin:0;padding:12px;color:#bbb;border-bottom:1px solid #eee;}
+section.widgets .widget header a.options {color:#ccc;}
+section.widgets .widget header a.options:hover {color:#428bca;}
+section.widgets .widget .content {padding:10px;}
+
+section.widgets .widget.ambient canvas {margin:0 0 10px 0;}
+section.widgets .widget.ambient .add {}
+section.widgets .widget.ambient .list {margin:10px 0 0 0;line-height:0;}
+section.widgets .widget.ambient .list .item {display:inline-block;width:48px;height:30px;line-height:33px;margin:0 2px 4px 2px;background:#f00;text-align:center;cursor:pointer;}
+section.widgets .widget.ambient .list .item span {display:none;color:#fff;}
+section.widgets .widget.ambient .list.remove .item span {display:inline;}

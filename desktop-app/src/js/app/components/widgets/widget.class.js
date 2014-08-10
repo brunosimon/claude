@@ -20,6 +20,7 @@
             this.name   = 'Widget';
             this.slug   = 'widget';
             this.id     = 0;
+            this.data   = {};
         },
 
         /**
@@ -37,7 +38,22 @@
         {
             var template = new APP.TOOLS.Template();
 
-            return template.render('widgets/' + this.slug,{id:this.id,slug:this.slug});
+            return template.render('widgets/' + this.slug,{id:this.id,slug:this.slug,name:this.name});
+        },
+
+        /**
+         * SERIALIZE
+         */
+        serialize: function()
+        {
+            var datas = {};
+
+            datas.name = this.name;
+            datas.slug = this.slug;
+            datas.id   = this.id;
+            datas.data = this.data;
+
+            return datas;
         }
     });
 })(window);

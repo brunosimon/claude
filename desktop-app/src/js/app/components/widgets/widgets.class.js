@@ -17,6 +17,7 @@
         {
             this._super(options);
 
+            this.data        = new APP.TOOLS.Data();
             this.template    = new APP.TOOLS.Template();
             this.id_iterator = 1;
             this.types       = {};
@@ -32,6 +33,24 @@
                 slug = this.options.types[i];
                 this.types[slug] = new APP.COMPONENTS[this.get_class_name(slug)]();
             }
+
+            // From save
+            var widgets = this.data.get('widgets'),
+                widget  = null;
+
+            if(widgets !== null)
+            {
+                for(var i = 0, len = widgets.length; i < len; i++)
+                {
+                    widget = widgets[i];
+                    this.add(widget.slug,widget.data);
+                }
+            }
+
+            // Create defaults if not exist (duplicates auto prevented if unique)
+            this.add('ambient');
+            this.add('sequences');
+            this.add('friends');
         },
 
         /**
@@ -43,10 +62,27 @@
         },
 
         /**
+         * SAVE
+         */
+        save: function()
+        {
+            var datas = [];
+
+            for(var i = 0, len = this.items.length; i < len; i++)
+                datas.push(this.items[i].serialize());
+
+            this.data.set('widgets',datas);
+
+            return this;
+        },
+
+        /**
          * ADD
          */
-        add: function(type)
+        add: function(type,data)
         {
+            var that = this;
+
             // Errors
             if(this.options.types.indexOf(type) === -1)
             {
@@ -57,14 +93,36 @@
                 return false;
             }
 
+            // Prevent duplicates
+            if(this.types[type].unique)
+            {
+                var widgets = this.find_by_type(type);
+                if(widgets.length)
+                {
+                    console.log('false');
+                    return false;
+                }
+            }
+
             // Create widget
-            var widget = new APP.COMPONENTS[this.get_class_name(type)]();
+            var widget = new APP.COMPONENTS[this.get_class_name(type)]({
+                data : data
+            });
             widget.id  = this.id_iterator++;
-            widget.start();
             this.items.push(widget);
 
             // Add template
             this.$.container.append(widget.get_template());
+
+            // Events
+            widget.on('needs-update',function()
+            {
+                // Save all widgets
+                that.save();
+            });
+
+            // Start
+            widget.start();
 
             // Log
             if(this.options.logs)
@@ -96,6 +154,23 @@
             }
 
             return false;
+        },
+
+        /**
+         * FIND BY TYPE
+         */
+        find_by_type: function(type)
+        {
+            var widgets = [],
+                i       = this.items.length;
+
+            while(i-- > 0)
+            {
+                if(this.items[i].slug === type)
+                    widgets.push(this.items[i]);
+            }
+
+            return widgets;
         }
     });
 })(window);
