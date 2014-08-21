@@ -16,7 +16,53 @@
         {
             this._super(options);
 
-            this.name = 'Sequences';
+            this.serial   = new APP.TOOLS.Serial();
+            this.name     = 'Sequences';
+            this.slug     = 'sequences';
+            this.template = 'sequences';
+            this.list     =
+            [
+                {
+                    name : 'Sequence 1',
+                    id   : 1
+                },
+                {
+                    name : 'Sequence 2',
+                    id   : 2
+                },
+                {
+                    name : 'Sequence 3',
+                    id   : 3
+                },
+                {
+                    name : 'Sequence 4',
+                    id   : 4
+                },
+                {
+                    name : 'Sequence 5',
+                    id   : 5
+                },
+                {
+                    name : 'Sequence 6',
+                    id   : 6
+                },
+                {
+                    name : 'Sequence 7',
+                    id   : 7
+                },
+            ];
+
+            // New
+            if(typeof this.options.data === 'undefined')
+            {
+                this.data.favorites = [];
+            }
+
+            // Existing datas
+            else
+            {
+                this.data.favorites = this.options.data.favorites;
+            }
         },
 
         /**
@@ -24,6 +70,115 @@
          */
         start: function()
         {
+            this._super();
+
+            // Elements
+            this.$.favorites = this.$.main.find('table.favorites');
+            this.$.defaults  = this.$.main.find('table.defaults');
+            this.$.items     = null;
+
+            var element  = null,
+                sequence = null;
+
+            // Create DOM
+            for(var i = 0, len = this.list.length; i < len; i++)
+            {
+                sequence = this.list[i];
+
+                // Favorite
+                element = $(['<tr class="sequence favorite sequence-',sequence.id,'" data-id="',sequence.id,'"><td class="name">',sequence.name,'</td><td class="icon"><span class="glyphicon glyphicon-heart"></span></td></tr>'].join(''));
+                if(this.data.favorites.indexOf(sequence.id) === -1)
+                    element.hide();
+                this.$.favorites.append(element);
+
+                // Default
+                element = $(['<tr class="sequence default sequence-',sequence.id,'" data-id="',sequence.id,'"><td class="name">',sequence.name,'</td><td class="icon"><span class="glyphicon glyphicon-heart-empty"></span></td></tr>'].join(''));
+                if(this.data.favorites.indexOf(sequence.id) !== -1)
+                    element.hide();
+                this.$.defaults.append(element);
+            }
+
+            this.$.items = this.$.main.find('tr.sequence');
+
+            this.update_dom()
+                .init_events();
+
+            return this;
+        },
+
+        /**
+         * INIT EVENTS
+         */
+        init_events: function()
+        {
+            var that = this;
+
+            // Sequences click
+            this.$.items.find('.name,.icon').on('click',function(e)
+            {
+                e.preventDefault();
+
+                var $this     = $(this),
+                    $sequence = $this.parent(),
+                    id        = $sequence.data('id');
+
+                // Name click
+                if($this.hasClass('name'))
+                {
+                    that.serial.write({action:'play-sequence',id:id});
+                }
+
+                // Favorite icon click
+                else if($this.hasClass('icon'))
+                {
+                    $sequence.hide();
+
+                    // Remove from favorites
+                    if($sequence.hasClass('favorite'))
+                    {
+                        // Update datas
+                        if(that.data.favorites.indexOf(id) !== -1)
+                            that.data.favorites.splice(that.data.favorites.indexOf(id),1);
+
+                        that.$.items.filter('.default.sequence-' + id).show();
+                    }
+
+                    // Add to favorites
+                    else
+                    {
+                        // Update datas
+                        if(that.data.favorites.indexOf(id) === -1)
+                            that.data.favorites.push(id);
+
+                        that.$.items.filter('.favorite.sequence-' + id).show();
+                    }
+
+                    that.update_dom();
+
+                    // Trigger
+                    that.trigger('needs-update');
+                }
+
+                return false;
+            });
+
+            return this;
+        },
+
+        /**
+         * UPDATE DOM
+         */
+        update_dom: function()
+        {
+            var that = this;
+
+            if(this.data.favorites.length === 0)
+                this.$.main.find('th').add(this.$.favorites).hide();
+            else if(this.data.favorites.length === this.list.length)
+                this.$.main.find('th').add(this.$.defaults).hide();
+            else
+                this.$.main.find('th').add(this.$.favorites).add(this.$.defaults).show();
+
             return this;
         }
     });

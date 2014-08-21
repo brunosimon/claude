@@ -16,8 +16,9 @@
         {
             this._super(options);
 
-            this.unique = false;
-            this.name   = 'Alarm';
+            this.unique   = false;
+            this.name     = 'Alarm';
+            this.slug     = 'alarm';
         },
 
         /**
@@ -25,6 +26,8 @@
          */
         start: function()
         {
+            this._super();
+
             return this;
         }
     });

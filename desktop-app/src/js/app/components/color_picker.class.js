@@ -72,12 +72,20 @@
             this.context = this.canvas.getContext('2d');
 
             // Offsets
-            this.offsets   = {};
-            this.offsets.x = this.$.container.offset().left;
-            this.offsets.y = this.$.container.offset().top;
+            this.offsets = {};
+            this.update_offsets();
 
             // CSS
             this.$.container.css({cursor:'pointer'});
+        },
+
+        /**
+         * UPDATE OFFSETS
+         */
+        update_offsets: function()
+        {
+            this.offsets.x = this.$.container.offset().left;
+            this.offsets.y = this.$.container.offset().top;
         },
 
         /**
@@ -195,6 +203,8 @@
             // Mouse down canvas
             this.canvas.onmousedown = function(e)
             {
+                that.update_offsets();
+
                 that.mouse_down = true;
 
                 if(e.clientX < that.options.size + that.offsets.x + 10)

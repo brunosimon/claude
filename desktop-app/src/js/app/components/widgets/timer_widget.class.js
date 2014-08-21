@@ -18,6 +18,7 @@
 
             this.unique = false;
             this.name   = 'Timer';
+            this.slug   = 'timer';
         },
 
         /**
@@ -25,6 +26,8 @@
          */
         start: function()
         {
+            this._super();
+
             return this;
         }
     });

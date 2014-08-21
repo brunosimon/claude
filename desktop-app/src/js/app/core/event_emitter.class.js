@@ -192,6 +192,14 @@
         },
 
         /**
+         * TRIGGA NIGGA WUT
+         */
+        trigga: function(name,args)
+        {
+            return this.trigger(name,args);
+        },
+
+        /**
          * CLEAN NAME
          */
         clean_name: function(name)

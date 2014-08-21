@@ -18,6 +18,7 @@
 
             this.unique = false;
             this.name   = 'Forecast';
+            this.slug   = 'forecast';
         },
 
         /**
@@ -25,6 +26,8 @@
          */
         start: function()
         {
+            this._super();
+
             return this;
         }
     });

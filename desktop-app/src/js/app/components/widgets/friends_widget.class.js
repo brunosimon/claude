@@ -16,7 +16,9 @@
         {
             this._super(options);
 
-            this.name = 'Friends';
+            this.name     = 'Friends';
+            this.slug     = 'friends';
+            this.template = 'friends';
         },
 
         /**
@@ -24,6 +26,8 @@
          */
         start: function()
         {
+            this._super();
+
             return this;
         }
     });

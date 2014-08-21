@@ -16,11 +16,12 @@
         {
             this._super(options);
 
-            this.unique = true;
-            this.name   = 'Widget';
-            this.slug   = 'widget';
-            this.id     = 0;
-            this.data   = {};
+            this.unique   = true;
+            this.name     = 'Widget';
+            this.slug     = 'widget';
+            this.template = 'widget';
+            this.id       = 0;
+            this.data     = {};
         },
 
         /**
@@ -28,7 +29,20 @@
          */
         start: function()
         {
+            var that = this;
 
+            this.$.main  = $('.widget-' + this.id);
+            this.$.close = this.$.main.find('a.close');
+
+            if(this.$.close.length)
+            {
+                this.$.close.on('click',function()
+                {
+                    that.trigga('needs-remove',[that.id]);
+
+                    return false;
+                });
+            }
         },
 
         /**
@@ -38,7 +52,7 @@
         {
             var template = new APP.TOOLS.Template();
 
-            return template.render('widgets/' + this.slug,{id:this.id,slug:this.slug,name:this.name});
+            return template.render('widgets/' + this.template,{id:this.id,slug:this.slug,name:this.name});
         },
 
         /**

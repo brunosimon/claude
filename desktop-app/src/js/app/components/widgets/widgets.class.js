@@ -58,6 +58,33 @@
          */
         start: function()
         {
+            var that = this;
+
+            this.$.container.packery({
+                itemSelector : '.widget',
+                gutter       : 20,
+                columnWidth  : 240,
+                columnHeight : 80
+            });
+
+            this.$.container.find('.widget').each( function(i,itemElem)
+            {
+                var draggie = new Draggabilly(itemElem,{
+                    handle : '.handle'
+                });
+
+                draggie.on( 'dragEnd', function( draggieInstance, event, pointer )
+                {
+                    window.setTimeout(function()
+                    {
+                        that.$.container.packery();
+                    },400);
+                });
+
+                that.$.container.packery('bindDraggabillyEvents',draggie);
+            });
+
+
             return this;
         },
 
@@ -98,10 +125,7 @@
             {
                 var widgets = this.find_by_type(type);
                 if(widgets.length)
-                {
-                    console.log('false');
                     return false;
-                }
             }
 
             // Create widget
@@ -121,8 +145,33 @@
                 that.save();
             });
 
+            widget.on('needs-remove',function(id)
+            {
+                // Log
+                if(this.options.logs)
+                    console.log('widgets : deleting widget with ID \'' + id + '\'');
+
+                var index = that.get_index_by_id(id);
+
+                if(index === -1)
+                {
+                    // Log
+                    if(this.options.logs)
+                        console.log('widgets : Cannot delete because ID not found');
+                }
+                else
+                {
+                    this.$.main.remove();
+                    that.items.splice(that.get_index_by_id(id),1);
+                    that.save();
+                }
+            });
+
             // Start
             widget.start();
+
+            // Save
+            this.save();
 
             // Log
             if(this.options.logs)
@@ -154,6 +203,24 @@
             }
 
             return false;
+        },
+
+        /**
+         * FIND INDEX BY ID
+         */
+        get_index_by_id: function(id)
+        {
+            var widget = null;
+
+            for(var i = 0, len = this.items.length; i < len; i++)
+            {
+                widget = this.items[i];
+
+                if(this.items[i].id === id)
+                    return i;
+            }
+
+            return -1;
         },
 
         /**

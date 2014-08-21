@@ -1,17 +1,23 @@
 {
-  "name": "Claude",
-  "main": "index.html",
-  "description": "Nuage lumineux connecté",
-  "repository": {
-    "type": "git",
-    "url": "test"
-  },
-  "window": {
-    "toolbar": true,
-    "frame": true,
-    "width": 900
-  },
-  "dependencies": {
-    "redis": "^0.11.0"
-  }
+    "name"        : "Claude",
+    "main"        : "index.html",
+    "description" : "Nuage lumineux connecté",
+    "repository"  :
+    {
+        "type" : "git",
+        "url"  : "test"
+    },
+    "window" :
+    {
+        "toolbar"   : false,
+        "frame"     : false,
+        "width"     : 800,
+        "min_width" : 800,
+        "max_width" : 800,
+        "height"    : 600
+    },
+    "dependencies" :
+    {
+        "redis": "^0.11.0"
+    }
 }

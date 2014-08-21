@@ -41,6 +41,50 @@
 
             this.header.start();
             this.widgets.start();
+
+            this.init_events();
+        },
+
+        /**
+         * INIT EVENTS
+         */
+        init_events: function()
+        {
+            var that = this;
+
+            // Debug mode
+            if(APP.CONFIG.debug)
+            {
+                var keys_down = [],
+                    index     = null;
+
+                // Keydown
+                window.onkeydown = function(e)
+                {
+                    index = keys_down.indexOf(e.keyCode);
+
+                    if(index === -1)
+                        keys_down.push(e.keyCode);
+
+                    // CMD + R
+                    if(keys_down.indexOf(82) !== -1 && keys_down.indexOf(91) !== -1)
+                    {
+                        var gui = require('nw.gui'),
+                            win = gui.Window.get();
+
+                        win.reload();
+                    }
+                };
+
+                // Keyup
+                window.onkeyup = function(e)
+                {
+                    index = keys_down.indexOf(e.keyCode);
+
+                    if(keys_down.indexOf(e.keyCode) !== -1)
+                        keys_down.splice(index,1);
+                };
+            }
         }
     });
 })(window);

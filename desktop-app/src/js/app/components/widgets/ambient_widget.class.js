@@ -16,10 +16,11 @@
         {
             this._super(options);
 
-            this.serial = new APP.TOOLS.Serial();
-            this.mode   = 'default';
-            this.name   = 'Ambient';
-            this.slug   = 'ambient';
+            this.serial   = new APP.TOOLS.Serial();
+            this.mode     = 'default';
+            this.name     = 'Ambient';
+            this.slug     = 'ambient';
+            this.template = 'ambient';
 
             // New
             if(typeof this.options.data === 'undefined')
@@ -39,10 +40,11 @@
          */
         start: function()
         {
+            this._super();
+
             var that = this;
 
             // Elements
-            this.$.main   = $('.widget-' + this.id);
             this.$.list   = this.$.main.find('.list');
             this.$.add    = this.$.main.find('a.add');
             this.$.remove = this.$.main.find('a.remove');
