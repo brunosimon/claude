@@ -18,10 +18,10 @@ var fs = require('fs');
          */
         static_instantiate: function()
         {
-            if(APP.TOOLS.Template.instance === null)
+            if(APP.TOOLS.Template.prototype.instance === null)
                 return null;
             else
-                return APP.TOOLS.Template.instance;
+                return APP.TOOLS.Template.prototype.instance;
         },
 
         /**

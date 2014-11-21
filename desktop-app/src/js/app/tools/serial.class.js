@@ -8,7 +8,7 @@ var serialport = require('serialport');
     {
         options:
         {
-            logs : false
+            logs : true
         },
 
         /**
@@ -16,10 +16,10 @@ var serialport = require('serialport');
          */
         static_instantiate: function()
         {
-            if(APP.TOOLS.Serial.instance === null)
+            if(APP.TOOLS.Serial.prototype.instance === null)
                 return null;
             else
-                return APP.TOOLS.Serial.instance;
+                return APP.TOOLS.Serial.prototype.instance;
         },
 
         /**
@@ -142,6 +142,8 @@ var serialport = require('serialport');
          */
         write: function(message)
         {
+            var that = this;
+
             // Not connected
             if(!this.connected)
             {
@@ -151,8 +153,10 @@ var serialport = require('serialport');
                 return this;
             }
 
-            var that = this;
+            // Convert
+            message = JSON.stringify(message);
 
+            // Logs
             if(this.options.logs)
                 console.log('serial : try writing message \'' + message + '\'');
 

@@ -25,10 +25,10 @@
          */
         static_instantiate: function()
         {
-            if(APP.TOOLS.Browser.instance === null)
+            if(APP.TOOLS.Browser.prototype.instance === null)
                 return null;
             else
-                return APP.TOOLS.Browser.instance;
+                return APP.TOOLS.Browser.prototype.instance;
         },
 
         /**

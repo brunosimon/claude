@@ -16,10 +16,10 @@ var Forecast = require('forecast');
          */
         static_instantiate: function()
         {
-            if(APP.TOOLS.Forecast.instance === null)
+            if(APP.TOOLS.Forecast.prototype.instance === null)
                 return null;
             else
-                return APP.TOOLS.Forecast.instance;
+                return APP.TOOLS.Forecast.prototype.instance;
         },
 
         /**

@@ -215,7 +215,7 @@
                     mode = 'lightness';
 
                 update(e.clientX,e.clientY);
-                that.trigger('change-start',[that.hue,that.saturation,that.lightness])
+                that.trigger('change-start',[that.hue,that.saturation,that.lightness]);
 
                 return false;
             };
@@ -282,6 +282,7 @@
                 {
                     that.mouse_down = false;
                     mode            = null;
+                    that.trigger('change-finish',[that.hue,that.saturation,that.lightness])
                 }
             });
         },
@@ -322,6 +323,65 @@
                 saturation : saturation,
                 lightness  : lightness
             };
+        },
+
+        /**
+         * GET RGB
+         */
+        get_rgb: function(hue,saturation,lightness)
+        {
+            if(typeof hue === 'undefined')
+                hue = this.hue;
+            if(typeof saturation === 'undefined')
+                saturation = this.saturation;
+            if(typeof lightness === 'undefined')
+                lightness = this.lightness;
+
+            // Clamp hue between 0 and 1
+            hue = (hue) / (Math.PI * 2);
+
+            var r, g, b, q, p;
+
+            if(saturation == 0)
+            {
+                r = g = b = lightness;
+            }
+
+            else
+            {
+                q = lightness < 0.5 ? lightness * (1 + saturation) : lightness + saturation - lightness * saturation;
+                p = 2 * lightness - q;
+
+                r = this.hue_to_rgb(p, q, hue + 1/3);
+                g = this.hue_to_rgb(p, q, hue);
+                b = this.hue_to_rgb(p, q, hue - 1/3);
+            }
+
+            return {
+                r : Math.round(r * 255),
+                g : Math.round(g * 255),
+                b : Math.round(b * 255)
+            };
+        },
+
+        hue_to_rgb: function(p, q, t)
+        {
+            if(t < 0)
+                t += 1;
+
+            if(t > 1)
+                t -= 1;
+
+            if(t < 1/6)
+                return p + (q - p) * 6 * t;
+
+            if(t < 1/2)
+                return q;
+
+            if(t < 2/3)
+                return p + (q - p) * (2/3 - t) * 6;
+
+            return p;
         }
     });
 })(window);

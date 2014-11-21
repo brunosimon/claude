@@ -1,0 +1,47 @@
+<div class="widget {{slug}} widget-{{id}}" data-id="{{id}}" data-slug="{{slug}}">
+    <header>
+        {{name}}
+        <a href="#" class="close"><span class="glyphicon glyphicon-remove-circle"></span></a>
+        <a href="#" class="handle"><span class="glyphicon glyphicon-th"></span></a>
+    </header>
+    <div class="content">
+        <form action="#">
+            <input type="forecast-city" class="form-control city" id="forecast-city" placeholder="City" disabled>
+            <a class="btn btn-default change" data-toggle="modal" data-target="#forecast-popin-{{id}}"><span class="glyphicon glyphicon-pencil"></span></a>
+        </form>
+        <!-- Ville : Nom, Bouton pour changer (popin) -->
+
+        <!-- Meteo de la journée : Bouton -->
+
+        <!-- Meteo live : Switch -->
+
+        <!-- Modal -->
+        <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">City</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-striped cities">
+                            <tr class="city" data-value="paris">
+                                <td>Paris</td>
+                            </tr>
+                            <tr class="city" data-value="new-york">
+                                <td>New-York</td>
+                            </tr>
+                            <tr class="city" data-value="montreuil">
+                                <td>Montreuil</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

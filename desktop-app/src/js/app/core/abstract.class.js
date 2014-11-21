@@ -19,6 +19,11 @@
         start: function()
         {
 
+        },
+
+        destroy: function()
+        {
+
         }
     });
 })(window);

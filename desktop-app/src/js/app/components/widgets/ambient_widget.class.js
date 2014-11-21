@@ -53,6 +53,9 @@
             this.picker = new APP.COMPONENTS.Color_Picker({container:'.widget-' + this.id + ' .picker'});
             this.picker.start();
 
+            // Interval
+            this.interval = null;
+
             // List
             this.add_color(this.data.list);
 
@@ -69,10 +72,39 @@
         {
             var that = this;
 
+            // Picker change start
+            this.picker.on('change-start',function(hue,saturation,lightness)
+            {
+                that.interval = window.setInterval(function()
+                {
+                    var rgb     = that.picker.get_rgb(),
+                        message =
+                        {
+                            action : 'ambient',
+                            r      : rgb.r,
+                            g      : rgb.g,
+                            b      : rgb.b
+                        };
+
+                    that.serial.write(message);
+                },200);
+            });
+
             // Picker change finish
             this.picker.on('change-finish',function(hue,saturation,lightness)
             {
-                that.serial.write(hue); // A tester
+                window.clearInterval(that.interval);
+
+                var rgb     = that.picker.get_rgb(),
+                    message =
+                    {
+                        action : 'ambient',
+                        r      : rgb.r,
+                        g      : rgb.g,
+                        b      : rgb.b
+                    };
+
+                that.serial.write(message);
             });
 
             // Add click
@@ -146,10 +178,18 @@
                 // Default
                 if(that.mode === 'default')
                 {
-                    var value = $this.data('value');
+                    var value   = $this.data('value'),
+                        rgb     = that.picker.get_rgb(value.hue,value.saturation,value.lightness),
+                        message =
+                        {
+                            action : 'ambient',
+                            r      : rgb.r,
+                            g      : rgb.g,
+                            b      : rgb.b
+                        };
 
                     that.picker.set(value);
-                    that.serial.write(value); // A tester
+                    that.serial.write(message);
                 }
 
                 // Remove

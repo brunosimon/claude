@@ -14,10 +14,10 @@
          */
         static_instantiate: function()
         {
-            if(APP.TOOLS.Data.instance === null)
+            if(APP.TOOLS.Data.prototype.instance === null)
                 return null;
             else
-                return APP.TOOLS.Data.instance;
+                return APP.TOOLS.Data.prototype.instance;
         },
 
         /**

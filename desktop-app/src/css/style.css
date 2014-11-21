@@ -37,3 +37,8 @@ section.widgets .widget.sequences td.name {cursor:pointer;}
 section.widgets .widget.sequences td.icon {width:35px;cursor:pointer;}
 section.widgets .widget.sequences td.icon:hover .glyphicon-heart-empty:before {content:"\e005";}
 section.widgets .widget.sequences td.icon:hover .glyphicon-heart:before {content:"\e143";}
+
+section.widgets .widget.forecast input.city {display:inline-block;width:176px;}
+section.widgets .widget.forecast a.change {display:inline-block;position:relative;top:-1px;}
+section.widgets .widget.forecast .modal .cities .city {cursor:pointer;}
+section.widgets .widget.forecast .modal .cities .city:hover {color:#428bca;}
