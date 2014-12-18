@@ -40,7 +40,7 @@ States :
   9 = Every Colors
   10 = Thunder
 */
-byte state = 3;
+byte state = 8;
 int time_divider = 1;
 
 void setup()
