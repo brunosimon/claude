@@ -1,10 +1,27 @@
 #include <Adafruit_NeoPixel.h>
-#include <math.h>
 
 /*
+
 {"action":"ambient"}
 {"action":"ambient","r":20,"g":5,"b":5}
-{"action":"ambient","r":20,"g":5,"b":5,"a":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}
+{"action":"sequence","id":"2"}
+{"action":"sequence","id":"2","time_scale":"0.6"}
+
+RGB :
+  0 -> 255
+
+Sequences :
+  1  = RGB
+  2  = Warning
+  3  = Snake
+  4  = k2000
+  5  = Rainbow
+  6  = Fire
+  7  = Ocean
+  8  = Glamor
+  9  = Every Colors
+  10 = Thunder
+
 */
 
 #define PIN 6
@@ -12,36 +29,24 @@
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(LEN, PIN, NEO_GRB + NEO_KHZ800);
 
-byte mode;
-char inData[255];
-char parameter[255];
-char value[255];
-char inChar;
 byte i = 0;
 byte j = 0;
 byte k = 0;
 
-String action = "";
-byte r;
-byte g;
-byte b;
+byte  sequence   = 8;
+float time_scale = 1;
 
-
-/*
-States :
-  1 = RGB
-  2 = Warning
-  3 = Snake
-  4 = k2000
-  5 = Rainbow
-  6 = Fire
-  7 = Ocean
-  8 = Glamor
-  9 = Every Colors
-  10 = Thunder
-*/
-byte state = 8;
-int time_divider = 1;
+byte mode;
+char input_data[255];
+char input_parameter[255];
+char input_value[255];
+char input_char;
+String input_action = "";
+byte   input_r;
+byte   input_g;
+byte   input_b;
+byte   input_id;
+float  input_time_scale;
 
 void setup()
 {
@@ -58,26 +63,26 @@ void loop()
     // Serial data incoming
     while(Serial.available() > 0)
     {
-        // Store each car in inData
-        inChar = Serial.read();
-        inData[i] = inChar;
+        // Store each car in input_data
+        input_char = Serial.read();
+        input_data[i] = input_char;
         i++;
 
         // End of object
-        if(inChar == '}')
+        if(input_char == '}')
         {
-            handle_input(inData,i);
+            handle_input(input_data,i);
         }
     }
     
-    if(state != 1)
+    if(sequence != 1)
         play_sequence();
 }
 
 void play_sequence()
 {
     double time = millis();
-    time = time / time_divider;
+    time = time / time_scale;
     
     double value = 0;
     double led_ratio = 0;
@@ -92,7 +97,7 @@ void play_sequence()
     
     //rgb_converter.hslToRgb(0.5,0.5,0.5,rgb);
     
-    switch(state)
+    switch(sequence)
     {
         // Warning (OK)
         case 2 :
@@ -297,75 +302,91 @@ double hue2rgb(double p, double q, double t) {
 
 void handle_action()
 {
-      if(action == "ambient")
-      {
-          set_strip_color(r,g,b);
-      }
+    if(input_action == "ambient")
+    {
+        sequence = 1;
+        set_strip_color(input_r,input_g,input_b);
+    }
+    else if(input_action == "sequence")
+    {
+        if(input_id >= 1 && input_id <= 10)
+        {
+            sequence = input_id;
+        }
+        
+        if(input_time_scale != 0)
+            time_scale = input_time_scale;
+    }
 }
 
-void handle_input(char* input_value, byte len)
+void handle_input(char* value, byte len)
 {
     i = 0;
     for(;i < len; i++)
     {
-        inChar = input_value[i];
+        input_char = value[i];
         
         // Start of object
-        if(inChar == '{')
+        if(input_char == '{')
         {
             mode = 0;
             j    = 0;
             
             // Reset parameter and value
-            memset(parameter, 0, sizeof(parameter));
-            memset(value, 0, sizeof(value));
+            memset(input_parameter, 0, sizeof(input_parameter));
+            memset(input_value, 0, sizeof(input_value));
+            input_time_scale = 0;
         }
         
         // Other couple
-        else if(inChar == ',' || inChar == '}')
+        else if(input_char == ',' || input_char == '}')
         {
             mode = 0;
             j    = 0;
             
-            if(strcmp(parameter,"action") == 0)
-                action = value;
-            else if(strcmp(parameter,"r") == 0)
-                r = (byte) strtol(value, NULL, 10);
-            else if(strcmp(parameter,"g") == 0)
-                g = (byte) strtol(value, NULL, 10);
-            else if(strcmp(parameter,"b") == 0)
-                b = (byte) strtol(value, NULL, 10);
+            if(strcmp(input_parameter,"action") == 0)
+                input_action = input_value;
+            else if(strcmp(input_parameter,"id") == 0)
+                input_id = (byte) strtol(input_value, NULL, 10);
+            else if(strcmp(input_parameter,"r") == 0)
+                input_r = (byte) strtol(input_value, NULL, 10);
+            else if(strcmp(input_parameter,"g") == 0)
+                input_g = (byte) strtol(input_value, NULL, 10);
+            else if(strcmp(input_parameter,"b") == 0)
+                input_b = (byte) strtol(input_value, NULL, 10);
+            else if(strcmp(input_parameter,"time_scale") == 0)
+                input_time_scale = (float) atof(input_value);
             
             // Reset parameter and value
-            memset(parameter, 0, sizeof(parameter));
-            memset(value, 0, sizeof(value));
+            memset(input_parameter, 0, sizeof(input_parameter));
+            memset(input_value, 0, sizeof(input_value));
 
             // End of object
-            if(inChar == '}')
+            if(input_char == '}')
             {
-                inChar = ' ';
+                input_char = ' ';
                 handle_action();
             }
         }
         
         // Value
-        else if(inChar == ':')
+        else if(input_char == ':')
         {
             mode = 1;
             j    = 0;
         }
         
         // Value
-        else if(inChar != '"')
+        else if(input_char != '"')
         {
             if(mode == 0)
             {
-                parameter[j] = inChar;
+                input_parameter[j] = input_char;
                 j++;
             }
             else if(mode == 1)
             {
-                value[j] = inChar;
+                input_value[j] = input_char;
                 j++;
             }
         }

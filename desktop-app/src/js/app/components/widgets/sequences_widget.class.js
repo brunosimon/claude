@@ -23,32 +23,40 @@
             this.list     =
             [
                 {
-                    name : 'Sequence 1',
-                    id   : 1
-                },
-                {
-                    name : 'Sequence 2',
+                    name : 'Warning',
                     id   : 2
                 },
                 {
-                    name : 'Sequence 3',
+                    name : 'Snake',
                     id   : 3
                 },
                 {
-                    name : 'Sequence 4',
+                    name : 'k2000',
                     id   : 4
                 },
                 {
-                    name : 'Sequence 5',
+                    name : 'Rainbow',
                     id   : 5
                 },
                 {
-                    name : 'Sequence 6',
+                    name : 'Fire',
                     id   : 6
                 },
                 {
-                    name : 'Sequence 7',
+                    name : 'Ocean',
                     id   : 7
+                },
+                {
+                    name : 'Glamor',
+                    id   : 8
+                },
+                {
+                    name : 'Every Colors',
+                    id   : 9
+                },
+                {
+                    name : 'Thunder',
+                    id   : 10
                 },
             ];
 
@@ -125,7 +133,7 @@
                 // Name click
                 if($this.hasClass('name'))
                 {
-                    that.serial.write({action:'play-sequence',id:id});
+                    that.serial.write({action:'sequence',id:id});
                 }
 
                 // Favorite icon click
