@@ -21,6 +21,7 @@
             // Init
             this.init_ports();
             this.init_checkbox();
+            this.init_off_button();
             // this.init_close_button();
         },
 
@@ -90,6 +91,44 @@
             this.serial.on( 'close', function( port )
             {
                 that.checkbox.$.input.removeAttr( 'checked' );
+            } );
+        },
+
+        /**
+         * INIT OFF BUTTON
+         */
+        init_off_button : function()
+        {
+            var that = this;
+
+            // Set up
+            this.off_button             = { $ : {} };
+            this.off_button.$.container = this.$.container.find( '.off-button' );
+            this.off_button.$.button    = this.off_button.$.container.find( 'button' );
+
+            // Serial open event
+            this.serial.on( 'open', function( port )
+            {
+                that.off_button.$.button.removeAttr( 'disabled' );
+            } );
+
+            // Serial open event
+            this.serial.on( 'off', function( port )
+            {
+                that.off_button.$.button.attr( 'disabled', 'disabled' );
+            } );
+
+            // off button click event
+            this.off_button.$.button.on( 'click', function()
+            {
+                that.serial.write( {
+                    action : 'ambient',
+                    r      : 0,
+                    g      : 0,
+                    b      : 0
+                } );
+
+                return false;
             } );
         },
 

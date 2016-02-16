@@ -6,7 +6,7 @@
     {
         options :
         {
-            debug : true
+            debug : false
         },
 
         /**
