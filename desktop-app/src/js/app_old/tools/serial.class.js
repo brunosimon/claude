@@ -1,73 +1,55 @@
-( function()
-{
-    'use strict';
+var serialport = require('serialport');
 
-    B.Tools.Serial = B.Core.Event_Emitter.extend(
+(function(window)
+{
+    "use strict";
+
+    APP.TOOLS.Serial = APP.CORE.Event_Emitter.extend(
     {
-        options :
+        options:
         {
             logs : true
         },
-        static : 'serial',
 
         /**
-         * Construct
+         * SINGLETON
          */
-        construct : function( options )
+        static_instantiate: function()
         {
-            this._super( options );
-
-            // Set up
-            this.serial_port_handler = require( 'serialport' );
-            this.serial_port         = null;
-            this.connected           = false;
-            this.data                = new B.Tools.Data();
-
-            // Init
-            this.connect_last_port();
+            if(APP.TOOLS.Serial.prototype.instance === null)
+                return null;
+            else
+                return APP.TOOLS.Serial.prototype.instance;
         },
 
         /**
-         * GET PORTS
+         * INIT
          */
-        get_ports : function( callback )
+        init: function(options)
         {
-            // Set up
-            var that      = this,
-                all_ports = [];
+            APP.TOOLS.Serial.prototype.instance = this;
 
-            // Test param
-            if( typeof callback !== 'function' )
-                return;
+            this._super(options);
 
-            // Get list callback
-            this.serial_port_handler.list( function( error, ports )
-            {
-                // Each port
-                ports.forEach( function( port )
-                {
-                    all_ports.push( port.comName );
-                } );
-
-                callback.apply( that, [ all_ports ] );
-            } );
+            this.serialPort = null;
+            this.connected  = false;
         },
 
         /**
-         * CONNECT LAST PORT
+         * START
          */
-        connect_last_port : function(params)
+        start: function()
         {
-            var last_port = this.data.get( 'last_port' );
+            this.open('/dev/cu.usbmodem1421');
+            this.auto_open();
 
-            if( last_port )
-                this.open( last_port );
+            return this;
         },
 
         /**
-         * Auto connect
+         * AUTO OPEN
          */
-        auto_connect: function()
+        auto_open: function()
         {
             var that = this;
 
@@ -76,7 +58,7 @@
                 this.close();
 
             // List every ports
-            this.serial_port_handler.list(function(error,ports)
+            serialport.list(function(error,ports)
             {
                 // Each port
                 ports.forEach(function(port)
@@ -96,7 +78,7 @@
         },
 
         /**
-         * Open
+         * OPEN
          */
         open: function(communication_name)
         {
@@ -106,18 +88,15 @@
             var that = this;
 
             // Initiate
-            this.serial_port = new this.serial_port_handler.SerialPort(communication_name,{baudrate:9600});
+            that.serial_port = new serialport.SerialPort(communication_name,{baudrate:9600});
 
             // Open event
-            this.serial_port.on('open', function()
+            that.serial_port.on('open', function()
             {
                 if(that.options.logs)
                     console.log('serial : connection opened');
 
                 that.connected = true;
-
-                // Save in data
-                that.data.set( 'last_port', communication_name );
 
                 // Receive data
                 that.serial_port.on('data', function(data)
@@ -125,26 +104,15 @@
                     if(that.options.logs)
                         console.log('serial : message received \'' + data + '\'');
 
-                    // Trigger
                     that.trigger('message_received',[data]);
                 });
-
-                // Close
-                that.serial_port.on('close', function()
-                {
-                    // Trigger
-                    that.trigger('close',[data]);
-                });
-
-                // Trigger
-                that.trigger('open',[communication_name]);
             });
 
             return this;
         },
 
         /**
-         * Close
+         * CLOSE
          */
         close: function()
         {
@@ -165,14 +133,13 @@
 
                 if(that.options.logs)
                     console.log('serial : connection closed');
-
             });
 
             return this;
         },
 
         /**
-         * Write
+         * WRITE
          */
         write: function(message)
         {
@@ -210,5 +177,5 @@
 
             return this;
         }
-    } );
-} )();
+    });
+})(window);

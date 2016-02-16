@@ -1,30 +1,29 @@
-(function()
+(function(window)
 {
-    'use strict';
+    "use strict";
 
-    B.Components.Color_Picker = B.Core.Event_Emitter.extend(
+    APP.COMPONENTS.Color_Picker = APP.CORE.Event_Emitter.extend(
     {
-        options :
+        options:
         {
-            size  : 130,
-            paths :
+            size      : 130,
+            container : null,
+            paths     :
             {
                 images : 'src/img/color-picker/'
             }
         },
 
         /**
-         * CONSTRUCT
+         * INIT
          */
-        construct : function( options )
+        init: function(options)
         {
-            this._super( options );
+            this._super(options);
 
-            // Set up
-            this.viewport    = new B.Tools.Viewport();
             this.canvas      = null;
             this.context     = null;
-            this.$.container = this.options.target;
+            this.$.container = $(this.options.container);
 
             this.mouse_down = false;
             this.hue        = 0;
@@ -33,23 +32,18 @@
 
             // Errors
             if(this.$.container.length === 0)
-            {
                 console.warn('color picker : wrong container');
-                return;
-            }
-
-            // Init
-            this.create();
-            this.init_events();
-            this.load();
         },
 
         /**
-         * LOAD
+         * START
          */
-        load: function()
+        start: function()
         {
             var that = this;
+
+            this.create();
+            this.init_events();
 
             // Hue image
             this.image = new Image();
@@ -211,19 +205,16 @@
             {
                 that.update_offsets();
 
-                var x = e.clientX + that.viewport.left,
-                    y = e.clientY + that.viewport.top;
-
                 that.mouse_down = true;
 
-                if(x < that.options.size + that.offsets.x + 10)
+                if(e.clientX < that.options.size + that.offsets.x + 10)
                     mode = 'hue';
-                else if(x < that.options.size + that.offsets.x + 10 + 20 + 20)
+                else if(e.clientX < that.options.size + that.offsets.x + 10 + 20 + 20)
                     mode = 'saturation';
                 else
                     mode = 'lightness';
 
-                update(x,y);
+                update(e.clientX,e.clientY);
                 that.trigger('change-start',[that.hue,that.saturation,that.lightness]);
 
                 return false;
@@ -242,10 +233,7 @@
             // Mouse move canvas
             this.canvas.onmousemove = function(e)
             {
-                var x = e.clientX + that.viewport.left,
-                    y = e.clientY + that.viewport.top;
-
-                update(e.clientX,y);
+                update(e.clientX,e.clientY);
                 that.trigger('change-progress',[that.hue,that.saturation,that.lightness])
 
                 return false;
@@ -395,5 +383,9 @@
 
             return p;
         }
-    } );
-} )();
+    });
+})(window);
+
+
+
+

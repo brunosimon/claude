@@ -1,147 +1,98 @@
-(function(window)
+( function()
 {
-    "use strict";
+    'use strict';
 
-    APP.COMPONENTS.Header = APP.CORE.Event_Emitter.extend(
+    B.Components.Header = B.Core.Abstract.extend(
     {
-        options:
-        {
+        options : {},
 
+        /**
+         * CONSTRUCT
+         */
+        construct : function( options )
+        {
+            this._super( options );
+
+            // Set up
+            this.gui    = require( 'nw.gui' );
+            this.win    = this.gui.Window.get();
+            this.$.main = $( 'header.header' );
+
+            // Init
+            this.init_buttons();
+            this.init_handle();
         },
 
         /**
-         * INIT
+         * INIT BUTTONS
          */
-        init: function(options)
-        {
-            this._super(options);
-
-            this.template = new APP.TOOLS.Template();
-            this.data     = new APP.TOOLS.Data();
-            this.widgets  = options.widgets;
-            this.gui      = require('nw.gui');
-            this.win      = this.gui.Window.get();
-
-            APP.CONFIG.$.body.prepend(this.template.render('header'));
-
-            this.$.main              = $('header.header');
-            this.$.name              = this.$.main.find('input.name');
-            this.$.widgets_container = this.$.main.find('ul.widgets');
-            this.$.buttons           = {};
-            this.$.buttons.container = this.$.main.find('.buttons');
-            this.$.buttons.quit      = this.$.buttons.container.find('.quit');
-            this.$.buttons.minimize  = this.$.buttons.container.find('.minimize');
-            this.$.buttons.maximize  = this.$.buttons.container.find('.maximize');
-            this.$.handle            = this.$.main.find('.handle');
-
-            // Widgets DOM
-            var element = null,
-                widget  = null;
-
-            for(var type in this.widgets.types)
-            {
-                widget  = this.widgets.types[type];
-
-                if(!widget.unique)
-                {
-                    element = ['<li><a href="#" data-type="',type,'">',widget.name,'</a></li>'].join('');
-                    this.$.widgets_container.append(element);
-                }
-            }
-            this.$.widgets = this.$.widgets_container.find('li a');
-
-            this.init_events();
-        },
-
-        /**
-         * START
-         */
-        start: function()
-        {
-            this.$.name.val(this.data.get('name'));
-
-            if(APP.CONFIG.debug)
-                this.win.showDevTools();
-        },
-
-        /**
-         * INIT EVENTS
-         */
-        init_events: function()
+        init_buttons : function()
         {
             var that = this;
 
-            // Name
-            this.$.name.on('focusout',function(e)
-            {
-                var val = that.$.name.val();
-                that.data.set('name',val);
-            });
+            // Set up
+            this.buttons             = { $ : {} };
+            this.buttons.$.container = this.$.main.find( '.buttons' );
+            this.buttons.$.quit      = this.buttons.$.container.find( '.quit' );
+            this.buttons.$.minimize  = this.buttons.$.container.find( '.minimize' );
+            this.buttons.$.maximize  = this.buttons.$.container.find( '.maximize' );
 
-            this.$.name.on('keydown',function(e)
-            {
-                if(e.keyCode === 13)
-                {
-                    that.$.name.blur();
-                }
-            });
-
-            // Widgets
-            this.$.widgets.on('click',function(e)
-            {
-                e.preventDefault();
-                var $this = $(this),
-                    type  = $this.data('type');
-
-                that.widgets.add(type);
-            });
-
-            // Quit
-            this.$.buttons.quit.on('click',function()
+            // Quit click
+            this.buttons.$.quit.on( 'click', function()
             {
                 that.win.close();
-            });
+            } );
 
-            // Reduce
-            this.$.buttons.minimize.on('click',function()
+            // Reduce click
+            this.buttons.$.minimize.on( 'click', function()
             {
                 that.win.minimize();
-            });
+            } );
 
-            // Close
-            this.$.buttons.maximize.on('click',function()
+            // Close click
+            this.buttons.$.maximize.on( 'click', function()
             {
                 that.win.maximize();
-            });
+            } );
+        },
 
-            // Handle
+        /**
+         * INIT HANDLE
+         */
+        init_handle : function()
+        {
+            var that = this;
 
-            var is_down = false,
-                offset  = {};
+            // Set up
+            this.handle             = { $ : {} };
+            this.handle.$.container = this.$.main.find( '.handle' );
+            this.handle.is_down     = false;
+            this.handle.offset      = {};
 
-            this.$.handle.on('mousedown',function(e)
+            // Mouse down event
+            this.handle.$.container.on( 'mousedown', function( e )
             {
-                is_down = true;
+                that.handle.is_down = true;
 
-                offset.x = e.clientX;
-                offset.y = e.clientY;
+                that.handle.offset.x = e.clientX;
+                that.handle.offset.y = e.clientY;
 
-                var mouseup_function = function(e)
+                var mouseup_function = function( e )
                 {
-                    is_down = false;
+                    that.handle.is_down = false;
 
-                    window.document.removeEventListener('mouseup',mouseup_function,false);
-                    window.document.removeEventListener('mousemove',mousemove_function,false);
+                    window.document.removeEventListener( 'mouseup', mouseup_function, false );
+                    window.document.removeEventListener( 'mousemove', mousemove_function, false );
                 };
 
-                var mousemove_function = function(e)
+                var mousemove_function = function( e )
                 {
-                    that.win.moveBy(e.clientX - offset.x,e.clientY - offset.y);
+                    that.win.moveBy( e.clientX - that.handle.offset.x, e.clientY - that.handle.offset.y );
                 };
 
-                window.document.addEventListener('mouseup',mouseup_function,false);
-                window.document.addEventListener('mousemove',mousemove_function,false);
-            });
+                window.document.addEventListener( 'mouseup', mouseup_function, false );
+                window.document.addEventListener( 'mousemove', mousemove_function, false );
+            } );
         }
-    });
-})(window);
+    } );
+} )();

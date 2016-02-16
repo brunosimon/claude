@@ -3,52 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <title>Claude</title>
-    <link rel="stylesheet" href="src/css/reset.css">
+    <!-- <link rel="stylesheet" href="src/css/reset.css"> -->
     <link rel="stylesheet" href="src/css/todc/bootstrap.min.css">
     <link rel="stylesheet" href="src/css/style.css">
 </head>
 <body>
 
+    <header class="header">
+        <div class="handle"></div>
+        <div class="buttons">
+            <span class="quit"></span>
+            <span class="minimize"></span>
+            <span class="maximize"></span>
+        </div>
+    </header>
+
+    <section class="connection">
+        <h1>Connection</h1>
+
+        <div class="ports">
+            <select class="form-control">
+                <option disabled>...</option>
+            </select>
+        </div>
+
+        <div class="checkbox disabled">
+            <label>
+                <input type="checkbox" disabled>
+                Connected
+            </label>
+        </div>
+
+        <!-- <div class="close-button">
+            <button type="button" disabled="disabled" class="btn btn-danger btn-xs">Close</a>
+        </div> -->
+    </section>
+
+    <section class="sequences">
+        <h1>Sequences</h1>
+
+        <hr>
+
+        <div class="speed-ratio">
+            <div class="form-group">
+                <label for="speed-ratio">Speed ratio</label>
+                <input type="range" class="form-control" id="speed-ratio" min="0.1" max="4" value="1" step="any">
+            </div>
+        </div>
+
+        <div class="list">
+            <strong>List</strong>
+            <br>
+            <a href="#" class="item btn btn-default" data-sequence-id="2">Warning</a>
+            <a href="#" class="item btn btn-default" data-sequence-id="3">Snake</a>
+            <a href="#" class="item btn btn-default" data-sequence-id="4">k2000</a>
+            <a href="#" class="item btn btn-default" data-sequence-id="5">Rainbow</a>
+            <a href="#" class="item btn btn-default" data-sequence-id="6">Fire</a>
+            <a href="#" class="item btn btn-default" data-sequence-id="7">Ocean</a>
+            <a href="#" class="item btn btn-default" data-sequence-id="8">Glamor</a>
+            <a href="#" class="item btn btn-default" data-sequence-id="9">Every Colors</a>
+            <a href="#" class="item btn btn-default" data-sequence-id="10">Thunder</a>
+        </div>
+
+    </section>
+
+    <section class="ambient">
+        <h1>Ambient</h1>
+
+        <hr>
+
+        <div class="content">
+            <div class="picker"></div>
+            <div class="list">
+                <a class="btn btn-default add">Add</a>
+                <a class="btn btn-default remove">Remove</a>
+                <div class="items"></div>
+            </div>
+        </div>
+
+    </section>
+
 
     <!-- LIBS -->
-    <script src="src/js/libs/class.js"></script>
+    <script src="src/js/libs/burno-0.3.js"></script>
     <script src="src/js/libs/jquery-2.1.1.min.js"></script>
-    <script src="src/js/libs/farbtastic-2.0.0.js"></script>
-    <script src="src/js/libs/todc/bootstrap.min.js"></script>
-    <script src="src/js/libs/underscore.min.js"></script>
-    <script src="src/js/libs/mustache.js"></script>
-    <script src="src/js/libs/packery.pkgd.min.js"></script>
-    <script src="src/js/libs/draggabilly.pkgd.min.js"></script>
 
     <!-- APP -->
-    <script src="src/js/app/app.js"></script>
-    <script src="src/js/app/core/abstract.class.js"></script>
-    <script src="src/js/app/core/event_emitter.class.js"></script>
-    <script src="src/js/app/core/app.class.js"></script>
-
-    <script src="src/js/app/tools/browser.class.js"></script>
-    <script src="src/js/app/tools/serial.class.js"></script>
-    <script src="src/js/app/tools/forecast.class.js"></script>
-    <script src="src/js/app/tools/data.class.js"></script>
-    <script src="src/js/app/tools/template.class.js"></script>
-
-    <script src="src/js/app/components/widgets/widgets.class.js"></script>
-    <script src="src/js/app/components/widgets/widget.class.js"></script>
-    <script src="src/js/app/components/widgets/alarm_widget.class.js"></script>
-    <script src="src/js/app/components/widgets/ambient_widget.class.js"></script>
-    <script src="src/js/app/components/widgets/forecast_widget.class.js"></script>
-    <script src="src/js/app/components/widgets/friends_widget.class.js"></script>
-    <script src="src/js/app/components/widgets/gmail_widget.class.js"></script>
-    <script src="src/js/app/components/widgets/sequences_widget.class.js"></script>
-    <script src="src/js/app/components/widgets/timer_widget.class.js"></script>
-    <script src="src/js/app/components/widgets/twitter_widget.class.js"></script>
+    <script src="src/js/app/components/app.class.js"></script>
     <script src="src/js/app/components/header.class.js"></script>
+    <script src="src/js/app/components/sequences.class.js"></script>
+    <script src="src/js/app/components/connection.class.js"></script>
+    <script src="src/js/app/components/ambient.class.js"></script>
     <script src="src/js/app/components/color_picker.class.js"></script>
+    <script src="src/js/app/tools/data.class.js"></script>
+    <script src="src/js/app/tools/serial.class.js"></script>
 
     <script>
 
-        var app = new APP.CORE.App();
-        app.start();
+        var app = new B.Components.App();
 
     </script>
 </body>

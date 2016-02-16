@@ -1,10 +1,8 @@
-body {background:#f0f0f0;cursor:default;}
+body {background:#f0f0f0;cursor:default;padding-top:34px;}
 body {-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}
+hr {border-top-color:#DADADA;}
 
-header.header {position:fixed;top:0;left:0;width:100%;height:100px;background:#fff;z-index:10;}
-header.header .logo {display:none;position:absolute;top:13px;left:22px;width:88px;line-height:0;font-size:84px;text-align:center;}
-header.header .dropdown {position:absolute;top:34px;right:34px;}
-header.header input[type=text] {position:absolute;top:28px;left:24px;width:300px;background:none;border:none;padding:0;margin:0;font-size:40px;line-height:60px;text-align:left;}
+header.header {position:fixed;top:0;left:0;width:100%;height:34px;background:#fff;z-index:10;}
 header.header .buttons {position:absolute;top:10px;left:10px;height:12px;line-height:0;}
 header.header .buttons span {display:inline-block;width:12px;height:12px;margin-right:2px;border-radius:6px;background:#000;cursor:pointer;}
 header.header .buttons .quit {background:#DD6868;}
@@ -12,33 +10,14 @@ header.header .buttons .minimize {background:#FFE24C;}
 header.header .buttons .maximize {background:#C3E766;}
 header.header .handle {position:absolute;top:0px;left:0;right:0;height:100%;}
 
-section.widgets {margin:120px 0 0 20px;}
-section.widgets .widget {width:240px;margin:0;background:#fff;}
-section.widgets .widget header {text-transform:uppercase;margin:0 12px;padding:12px 0;color:#bbb;border-bottom:1px solid #eee;}
-section.widgets .widget header a.options {color:#ccc;}
-section.widgets .widget header a.options:hover {color:#428bca;}
-section.widgets .widget header .handle,
-section.widgets .widget header .close {float:right;font-size:21px;font-weight:700;line-height:1;color:#000;text-shadow:0 1px 0 #fff;filter:alpha(opacity=20);opacity:.2;}
-section.widgets .widget header .handle:hover,
-section.widgets .widget header .close:hover {opacity:0.3;}
-section.widgets .widget header .handle {cursor:move;font-size:19px;margin:0 4px 0 0;}
-section.widgets .widget .content {padding:10px;}
+section.connection {padding:10px 20px;}
 
-section.widgets .widget.ambient canvas {margin:0 0 10px 0;}
-section.widgets .widget.ambient .list {margin:10px 0 0 0;line-height:0;}
-section.widgets .widget.ambient .list .item {display:inline-block;width:48px;height:30px;line-height:33px;margin:0 2px 4px 2px;background:#f00;text-align:center;cursor:pointer;}
-section.widgets .widget.ambient .list .item span {display:none;color:#fff;}
-section.widgets .widget.ambient .list.remove .item span {display:inline;}
+section.sequences {padding:10px 20px;}
 
-section.widgets .widget.sequences .table > tbody > tr > td,
-section.widgets .widget.sequences .table > tbody > tr > th {border:none !important;}
-section.widgets .widget.sequences th {text-align:center;}
-section.widgets .widget.sequences td.name {cursor:pointer;}
-section.widgets .widget.sequences td.icon {width:35px;cursor:pointer;}
-section.widgets .widget.sequences td.icon:hover .glyphicon-heart-empty:before {content:"\e005";}
-section.widgets .widget.sequences td.icon:hover .glyphicon-heart:before {content:"\e143";}
-
-section.widgets .widget.forecast input.city {display:inline-block;width:176px;}
-section.widgets .widget.forecast a.change {display:inline-block;position:relative;top:-1px;}
-section.widgets .widget.forecast .modal .cities .city {cursor:pointer;}
-section.widgets .widget.forecast .modal .cities .city:hover {color:#428bca;}
+section.ambient {padding:10px 20px;}
+section.ambient canvas {margin:0 0 10px 0;}
+section.ambient .list {margin:10px 0 0 0;line-height:0;}
+section.ambient .list .items {padding:10px 0;}
+section.ambient .list .item {display:inline-block;width:30px;height:30px;line-height:33px;margin:0 2px 4px 2px;background:#f00;text-align:center;cursor:pointer;}
+section.ambient .list .item span {display:none;color:#fff;}
+section.ambient .list.remove .item span {display:inline;}
